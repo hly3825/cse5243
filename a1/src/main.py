@@ -5,12 +5,13 @@ from bs4 import BeautifulSoup
 #from nltk.stem import SnowballStemmer
 
 from document import Document
+from tfidf import Tfidf
 
 input_dir  = '../data/input'
 temp_dir   = '../data/temp'
 output_dir = '../data/output'
 extension  = '.sgm'
-stopwords  = []
+tfidf      = Tfidf()
 #stemmer    = SnowballStemmer("english")
 
 def process_file(fname):
@@ -18,7 +19,7 @@ def process_file(fname):
     soup = BeautifulSoup(open(fname), 'html.parser')
     for doc in soup.find_all('reuters'):
         d = Document(doc)
-        print d
+        tfidf.add(d)
 
 def process_files():
     print input_dir, temp_dir, output_dir, extension
@@ -28,3 +29,4 @@ def process_files():
 
 if __name__ == '__main__':
     process_files()
+    tfidf.pp('2')

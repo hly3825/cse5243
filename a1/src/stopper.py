@@ -1,10 +1,12 @@
+import re
+
 class Stopper:
 
-    stopwords = []
-
     def __init__(self, filename):
+        self.stopwords = []
         with open(filename, 'r') as sf:
-            Stopper.stopwords = sf.read().split()
+            self.stopwords = sf.read().split()
 
     def filter(self, text):
-        return [word for word in text.split() if word not in Stopper.stopwords]
+        text = re.sub('[^A-Za-z]+', ' ', text)
+        return [word for word in text.split() if word not in self.stopwords]
