@@ -1,7 +1,10 @@
 import os,csv
 from os.path import join
+
 from bs4 import BeautifulSoup
 #from nltk.stem import SnowballStemmer
+
+from document import Document
 
 input_dir  = '../data/input'
 temp_dir   = '../data/temp'
@@ -36,9 +39,8 @@ def process_file(fname):
         places = find_children(doc, 'places')
         body = remove_stopwords(doc.find('body').string.lower())
         #body = map(stemmer.stem, body)
-        print id, date, topics, places
-        print body
-        print
+        d = Document(id, date, title, topics, places, body)
+        print d
 
 def process_files():
     print input_dir, temp_dir, output_dir, extension
