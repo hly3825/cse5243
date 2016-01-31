@@ -1,10 +1,12 @@
 from stopper import Stopper
+#from nltk.stem import SnowballStemmer
 
 def _find_children(doc, parent):
     return [child.string for child in doc.find(parent).find_all('d')]
 
 class Document:
     stopper = Stopper("../data/input/stopwords.txt")
+    #stemmer = SnowballStemmer("english")
 
     def __init__(self, doc):
         self.id = doc['newid']
@@ -18,6 +20,9 @@ class Document:
         body = Document.stopper.filter(body)
         #body = map(stemmer.stem, body)
         self.body = body
+
+    def get(self, field):
+        return self.__dict__[field]
 
     def __str__(self):
         return "{} {}\n{} {}\n{}\n".format(
