@@ -12,6 +12,7 @@ extension  = '.sgm'
 tfidf      = Tfidf()
 topics     = Feature('topics')
 places     = Feature('places')
+titles     = Feature('title')
 
 def process_file(fname):
     print "Processing %s" % fname
@@ -22,6 +23,7 @@ def process_file(fname):
             tfidf.add(d)
             topics.add(d)
             places.add(d)
+            titles.add(d)
         except:
             pass
 
@@ -35,3 +37,4 @@ if __name__ == '__main__':
     tfidf.dump()
     topics.dump()
     places.dump()
+    titles.dump()

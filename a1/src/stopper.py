@@ -9,4 +9,4 @@ class Stopper:
 
     def filter(self, text):
         text = re.sub('[^A-Za-z]+', ' ', text)
-        return [word for word in text.split() if word not in self.stopwords]
+        return [word for word in text.split() if len(word) > 2 and word not in self.stopwords]
