@@ -28,6 +28,7 @@ def process_files():
 
 if __name__ == '__main__':
     process_files()
-    f.build()
     f1 = Feature1(f)
-    f1.dump()
+    f1.write()
+    f2 = Feature1(f)
+    f2.write()

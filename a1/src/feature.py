@@ -1,4 +1,5 @@
 import operator
+from sets import Set
 from tfidf import Tfidf
 from output import Output
 
@@ -7,26 +8,32 @@ class Feature:
     def __init__(self):
         self.tfidf = Tfidf()
         self.docs = []
-        self.matrix = {}
+        self.twords = Set()
+        self.bwords = Set()
 
     def add(self, doc):
         self.docs.append(doc)
+        self.twords.update(doc.title)
+        self.bwords.update(doc.body)
         self.tfidf.add(doc)
-
-    def build(self):
-        for d in self.docs:
-            self.matrix[d.id] = {}
-            for w in self.tfidf.wordset:
-                self.matrix[d.id][w] = self.tfidf.calc(w, d.id)
 
 class Feature1:
 
     def __init__(self, f):
         self.tfidf = f.tfidf
         self.docs = f.docs
-        self.matrix = f.matrix
+        self.twords = f.twords
+        self.bwords = f.bwords
         self.out = Output('set1')
         self.features = []
+        self.matrix = {}
+
+    def _build(self):
+        for d in self.docs:
+            self.matrix[d.id] = {}
+            words = self.twords | self.bwords
+            for w in words:
+                self.matrix[d.id][w] = self.tfidf.calc(w, d.id)
 
     def _select(self):
         for did, row in self.matrix.iteritems():
@@ -36,17 +43,46 @@ class Feature1:
                     self.features.append(word)
         self.features = sorted(self.features)
 
-    def dump(self):
+    def write(self):
+        self._build()
         self._select()
         self.out.write_data(self.docs, self.features, self.matrix)
+
 
 class Feature2(Feature):
 
     def __init__(self, f):
         self.tfidf = f.tfidf
         self.docs = f.docs
+        self.twords = f.twords
+        self.bwords = f.bwords
+        self.out = Output('set2')
+        self.features = []
+        self.matrix = {}
 
-    def generate_weights(self, docs, words):
-        pass
+    def _build(self):
+        for d in self.docs:
+            self.matrix[d.id] = {}
+            words = self.twords | self.bwords
+            for w in words:
+                if w in self.twords & self.bwords:
+                    factor = 2.0
+                elif w in self.twords:
+                    factor = 1.5
+                else:
+                    factor = 1.0
+                self.matrix[d.id][w] = self.tfidf.calc(w, d.id)*factor
 
+    def _select(self):
+        for did, row in self.matrix.iteritems():
+            top5 = dict(sorted(row.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
+            for word, tfidf in top5.iteritems():
+                if tfidf > 0:
+                    self.features.append(word)
+        self.features = sorted(self.features)
+
+    def write(self):
+        self._build()
+        self._select()
+        self.out.write_data(self.docs, self.features, self.matrix)
 

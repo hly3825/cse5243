@@ -5,7 +5,6 @@ class Tfidf:
     def __init__(self):
         self.docs = {}
         self.df = {}
-        self.wordset = Set()
 
     def add(self, doc):
         tf = {}
@@ -15,7 +14,6 @@ class Tfidf:
             tf[w] = tf.get(w, 0.0) + incr
         self.docs[doc.id] = tf
         for w in set(words):
-            self.wordset.add(w)
             self.df[w] = self.df.get(w, 0) + 1
 
     def calc(self, word, did):
