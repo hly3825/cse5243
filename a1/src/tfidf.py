@@ -1,25 +1,59 @@
-import math
+import math, numpy
+from collections import Counter
+from sets import Set
+from output import *
 
 class Tfidf:
     def __init__(self):
-        self.docs = {}
-        self.words = {}
+        self.docs = []
+        self.wordset = Set()
+        self.df = Counter()
+        self.idfmat = []
 
     def add(self, doc):
-        tf = {}
+        self.docs.append(doc)
         words = doc.title + doc.body
-        for w in words:
-            tf[w] = (tf.get(w, 0.0) + 1.0)/len(words)
-            self.words[w] = self.words.get(w, 0) + 1
-        self.docs[doc.id] = tf
+        for w in Set(words):
+            self.wordset.add(w)
+            self.df[w] += 1
+
+    def _filter(self):
+        self.wordset = [w for w in self.wordset if self.df[w] > 1]
+
+    def _tf(self, word, doc):
+        words = doc.title + doc.body
+        return words.count(word)
+
+    def _tfmat(self):
+        for d in self.docs:
+            tfvec = [self._tf(w, d) for w in self.wordset]
+            yield d.id, tfvec
 
     def _idf(self, word):
-        return math.log(len(self.docs)) / (1 + self.words[word])
+        return math.log(len(self.docs)) / (1 + self.df[word])
+
+    def _idfmat(self):
+        idfvec = [self._idf(w) for w in self.wordset]
+        idfmat = numpy.zeros((len(idfvec), len(idfvec)))
+        numpy.fill_diagonal(idfmat, idfvec)
+        self.idfmat = idfmat
+
+    def _tfidfmat(self):
+        for id, tfvec in self._tfmat():
+            yield id, numpy.dot(tfvec, self.idfmat)
+
+    def _print_wordset(self):
+        set_output('wordset')
+        for w in self.wordset:
+            print str(w)
+        reset_output()
 
     def dump(self):
-        for id, tfs in self.docs.iteritems():
-            print id,
-            for w, tf in tfs.iteritems():
-                tf_idf = tf * self._idf(w)
-                print (str(w), tf_idf),
-            print "\n\n"
+        self._filter()
+        self._idfmat()
+        self._print_wordset()
+        set_output('tfidf')
+        numpy.set_printoptions(precision=3)
+        for id, row in self._tfidfmat():
+            print id, row
+        reset_output()

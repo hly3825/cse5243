@@ -1,13 +1,12 @@
 import os
 from os.path import join
-
 from bs4 import BeautifulSoup
-
 from document import Document
 from tfidf import Tfidf
 from feature import Feature
 
 input_dir  = '../data/input/test'
+#input_dir  = '../data/input/reuters'
 extension  = '.sgm'
 tfidf      = Tfidf()
 topics     = Feature('topics')
