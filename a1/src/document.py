@@ -23,9 +23,3 @@ class Document:
 
     def get(self, field):
         return self.__dict__[field]
-
-    def __str__(self):
-        return "{} {}\n{} {}\n{}\n".format(
-                self.id, self.date,
-                self.topics, self.places,
-                self.title)

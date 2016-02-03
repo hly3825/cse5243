@@ -1,34 +1,52 @@
-import sys
-from sets import Set
-from document import Document
-from output import *
+import operator
+from tfidf import Tfidf
+from output import Output
 
 class Feature:
 
-    def __init__(self, field):
-        self.field = field
-        self.wordset = Set()
+    def __init__(self):
+        self.tfidf = Tfidf()
         self.docs = []
+        self.matrix = {}
 
     def add(self, doc):
         self.docs.append(doc)
-        words = doc.get(self.field)
-        for w in words:
-            self.wordset.add(w)
+        self.tfidf.add(doc)
 
-    def _print_header(self):
-        print 'id',
-        for w in self.wordset:
-            print str(w),
-        print
+    def build(self):
+        for d in self.docs:
+            self.matrix[d.id] = {}
+            for w in self.tfidf.wordset:
+                self.matrix[d.id][w] = self.tfidf.calc(w, d.id)
+
+class Feature1:
+
+    def __init__(self, f):
+        self.tfidf = f.tfidf
+        self.docs = f.docs
+        self.matrix = f.matrix
+        self.out = Output('set1')
+        self.features = []
+
+    def _select(self):
+        for did, row in self.matrix.iteritems():
+            top5 = dict(sorted(row.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
+            for word, tfidf in top5.iteritems():
+                if tfidf > 0:
+                    self.features.append(word)
+        self.features = sorted(self.features)
 
     def dump(self):
-        set_output(self.field)
-        self._print_header()
-        for d in self.docs:
-            words = d.get(self.field)
-            print d.id,
-            for w in self.wordset:
-                print 1 if w in words else 0,
-            print
-        reset_output()
+        self._select()
+        self.out.write_data(self.docs, self.features, self.matrix)
+
+class Feature2(Feature):
+
+    def __init__(self, f):
+        self.tfidf = f.tfidf
+        self.docs = f.docs
+
+    def generate_weights(self, docs, words):
+        pass
+
+

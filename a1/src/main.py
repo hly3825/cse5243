@@ -2,16 +2,13 @@ import os
 from os.path import join
 from bs4 import BeautifulSoup
 from document import Document
-from tfidf import Tfidf
-from feature import Feature
+from feature import *
 
 input_dir  = '../data/input/test'
 #input_dir  = '../data/input/reuters'
-extension  = '.sgm'
-tfidf      = Tfidf()
-topics     = Feature('topics')
-places     = Feature('places')
-titles     = Feature('title')
+extension  = '.sgm_'
+
+f  = Feature()
 
 def process_file(fname):
     print "Processing %s" % fname
@@ -19,11 +16,9 @@ def process_file(fname):
     for doc in soup.find_all('reuters'):
         try:
             d = Document(doc)
-            tfidf.add(d)
-            topics.add(d)
-            places.add(d)
-            titles.add(d)
-        except:
+            f.add(d)
+        except Exception as e:
+            print e.message
             pass
 
 def process_files():
@@ -33,7 +28,6 @@ def process_files():
 
 if __name__ == '__main__':
     process_files()
-    tfidf.dump()
-    topics.dump()
-    places.dump()
-    titles.dump()
+    f.build()
+    f1 = Feature1(f)
+    f1.dump()
