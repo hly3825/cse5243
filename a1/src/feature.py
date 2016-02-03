@@ -25,7 +25,7 @@ class Feature1:
         self.twords = f.twords
         self.bwords = f.bwords
         self.out = Output('set1')
-        self.features = []
+        self.features = Set()
         self.matrix = {}
 
     def _build(self):
@@ -40,10 +40,11 @@ class Feature1:
             top5 = dict(sorted(row.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
             for word, tfidf in top5.iteritems():
                 if tfidf > 0:
-                    self.features.append(word)
+                    self.features.add(word)
         self.features = sorted(self.features)
 
     def write(self):
+        print 'Building and selecting Feature Set 1'
         self._build()
         self._select()
         self.out.write_data(self.docs, self.features, self.matrix)
@@ -57,7 +58,7 @@ class Feature2(Feature):
         self.twords = f.twords
         self.bwords = f.bwords
         self.out = Output('set2')
-        self.features = []
+        self.features = Set()
         self.matrix = {}
 
     def _build(self):
@@ -65,10 +66,8 @@ class Feature2(Feature):
             self.matrix[d.id] = {}
             words = self.twords | self.bwords
             for w in words:
-                if w in self.twords & self.bwords:
+                if w in self.twords:
                     factor = 2.0
-                elif w in self.twords:
-                    factor = 1.5
                 else:
                     factor = 1.0
                 self.matrix[d.id][w] = self.tfidf.calc(w, d.id)*factor
@@ -78,10 +77,11 @@ class Feature2(Feature):
             top5 = dict(sorted(row.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
             for word, tfidf in top5.iteritems():
                 if tfidf > 0:
-                    self.features.append(word)
+                    self.features.add(word)
         self.features = sorted(self.features)
 
     def write(self):
+        print 'Building and selecting Feature Set 2'
         self._build()
         self._select()
         self.out.write_data(self.docs, self.features, self.matrix)

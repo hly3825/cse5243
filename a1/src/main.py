@@ -5,8 +5,9 @@ from document import Document
 from feature import *
 
 input_dir  = '../data/input/test'
-#input_dir  = '../data/input/reuters'
-extension  = '.sgm_'
+#input_dir  = '../data/input/mini'
+#input_dir  = '../data/input/full'
+extension  = '.sgm'
 
 f  = Feature()
 
@@ -18,7 +19,7 @@ def process_file(fname):
             d = Document(doc)
             f.add(d)
         except Exception as e:
-            print e.message
+            #print e.message
             pass
 
 def process_files():
@@ -30,5 +31,5 @@ if __name__ == '__main__':
     process_files()
     f1 = Feature1(f)
     f1.write()
-    f2 = Feature1(f)
+    f2 = Feature2(f)
     f2.write()

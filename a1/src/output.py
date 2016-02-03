@@ -7,7 +7,7 @@ class Output:
 
     def _set_output(self):
         print 'Writing to file ' + self.filename
-        #sys.stdout = open(self.filename, 'w')
+        sys.stdout = open(self.filename, 'w')
 
     def _reset_output(self):
         sys.stdout = sys.__stdout__
