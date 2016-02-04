@@ -1,12 +1,19 @@
 import re
+from config import *
 
 class Stopper:
 
-    def __init__(self, filename):
-        self.stopwords = []
+    def _read_file(self, filename):
         with open(filename, 'r') as sf:
-            self.stopwords = sf.read().split()
+            return sf.read().split()
+
+    def __init__(self):
+        self.stopwords = self._read_file('../data/input/stopwords.txt')
+        #self.engwords = self._read_file('/usr/share/dict/words')
 
     def filter(self, text):
         text = re.sub('[^A-Za-z]+', ' ', text)
-        return [word for word in text.split() if len(word) > 2 and word not in self.stopwords]
+        return [word for word in text.split()
+                if len(word) > 3 and
+                #word in self.engwords and
+                word not in self.stopwords]

@@ -8,7 +8,7 @@ class Tfidf:
 
     def add(self, doc):
         tf = {}
-        words = doc.title + doc.body
+        words = doc.title + doc.body + doc.topics + doc.places
         incr = 1.0/len(words)
         for w in words:
             tf[w] = tf.get(w, 0.0) + incr
@@ -16,7 +16,13 @@ class Tfidf:
         for w in set(words):
             self.df[w] = self.df.get(w, 0) + 1
 
-    def calc(self, word, did):
-        tf = self.docs[did].get(word, 0)
-        idf = math.log(len(self.docs)) / (1 + self.df[word])
+    def get_tf(self, word, did):
+        return self.docs[did].get(word, 0)
+
+    def get_idf(self, word):
+        return self.df[word]
+
+    def get_tfidf(self, word, did):
+        tf = self.get_tf(word, did)
+        idf = math.log(len(self.docs)) / (1 + self.get_idf(word))
         return tf * idf

@@ -8,40 +8,49 @@ class Feature:
     def __init__(self):
         self.tfidf = Tfidf()
         self.docs = []
-        self.twords = Set()
-        self.bwords = Set()
+        self.title = Set()
+        self.body = Set()
+        self.topics = Set()
+        self.places = Set()
 
     def add(self, doc):
         self.docs.append(doc)
-        self.twords.update(doc.title)
-        self.bwords.update(doc.body)
         self.tfidf.add(doc)
+        self.title.update(doc.title)
+        self.body.update(doc.body)
+        self.topics.update(doc.topics)
+        self.places.update(doc.places)
 
 class Feature1:
 
     def __init__(self, f):
         self.tfidf = f.tfidf
         self.docs = f.docs
-        self.twords = f.twords
-        self.bwords = f.bwords
-        self.out = Output('set1')
+        self.title = f.title
+        self.topics = f.topics
+        self.places = f.places
+        self.body = f.body
+        self.out = Output('output1')
         self.features = Set()
         self.matrix = {}
 
     def _build(self):
         for d in self.docs:
             self.matrix[d.id] = {}
-            words = self.twords | self.bwords
+            words = self.title | self.body | self.topics | self.places
             for w in words:
-                self.matrix[d.id][w] = self.tfidf.calc(w, d.id)
+                self.matrix[d.id][w] = self.tfidf.get_tfidf(w, d.id)
 
     def _select(self):
         for did, row in self.matrix.iteritems():
-            top5 = dict(sorted(row.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
-            for word, tfidf in top5.iteritems():
+            selected = dict(sorted(row.iteritems(),
+                            key=operator.itemgetter(1),
+                            reverse=True)[2:7])
+            for word, tfidf in selected.iteritems():
                 if tfidf > 0:
                     self.features.add(word)
-        self.features = sorted(self.features)
+        self.features.update(self.topics)
+        self.features.update(self.places)
 
     def write(self):
         print 'Building and selecting Feature Set 1'
@@ -55,30 +64,35 @@ class Feature2(Feature):
     def __init__(self, f):
         self.tfidf = f.tfidf
         self.docs = f.docs
-        self.twords = f.twords
-        self.bwords = f.bwords
-        self.out = Output('set2')
+        self.title = f.title
+        self.body = f.body
+        self.topics = f.topics
+        self.places = f.places
+        self.out = Output('output2')
         self.features = Set()
         self.matrix = {}
+        self.idfs = {}
 
     def _build(self):
         for d in self.docs:
             self.matrix[d.id] = {}
-            words = self.twords | self.bwords
+            words = self.title | self.body | self.topics | self.places
             for w in words:
-                if w in self.twords:
-                    factor = 2.0
-                else:
-                    factor = 1.0
-                self.matrix[d.id][w] = self.tfidf.calc(w, d.id)*factor
+                self.matrix[d.id][w] = self.tfidf.get_tfidf(w, d.id)
+                self.idfs[w] = self.tfidf.get_idf(w)
 
     def _select(self):
-        for did, row in self.matrix.iteritems():
-            top5 = dict(sorted(row.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
-            for word, tfidf in top5.iteritems():
-                if tfidf > 0:
-                    self.features.add(word)
-        self.features = sorted(self.features)
+        self.idfs = {k:v for (k,v) in self.idfs.iteritems() if v>1}
+        length = len(self.idfs)
+        start = max(length/2 - 50, 0)
+        end   = min(length/2 + 50, length)
+        selected = dict(sorted(self.idfs.iteritems(),
+                        key=operator.itemgetter(1),
+                        reverse=True)[start:end])
+        for word, idf in selected.iteritems():
+            self.features.add(word)
+        self.features.update(self.topics)
+        self.features.update(self.places)
 
     def write(self):
         print 'Building and selecting Feature Set 2'

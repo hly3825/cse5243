@@ -1,9 +1,10 @@
 import sys
+from config import *
 
 class Output:
 
     def __init__(self, filename):
-        self.filename = '../data/output/' + filename + '.txt'
+        self.filename = output_dir + filename + '.txt'
 
     def _set_output(self):
         print 'Writing to file ' + self.filename
@@ -14,8 +15,7 @@ class Output:
 
     def _print_header(self, features):
         print '#id',
-        print ' '.join(features),
-        print 'places topics'
+        print ' '.join(features)
 
     def write_data(self, docs, features, matrix):
         self._set_output()
@@ -24,5 +24,5 @@ class Output:
             print doc.id,
             for f in features:
                 print matrix[doc.id][f],
-            print doc.places, doc.topics
+            print
         self._reset_output()

@@ -3,11 +3,7 @@ from os.path import join
 from bs4 import BeautifulSoup
 from document import Document
 from feature import *
-
-input_dir  = '../data/input/test'
-#input_dir  = '../data/input/mini'
-#input_dir  = '../data/input/full'
-extension  = '.sgm'
+from config import *
 
 f  = Feature()
 
