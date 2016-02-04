@@ -10,7 +10,7 @@ class Document:
 
     def __init__(self, doc):
         self.id = doc['newid']
-        self.date = doc.find('date').string
+        #self.date = doc.find('date').string
         self.topics = _find_children(doc, 'topics')
         self.places = _find_children(doc, 'places')
         title = doc.find('title').string.lower()
@@ -18,7 +18,7 @@ class Document:
         self.title = title
         body = doc.find('body').string.lower()
         body = Document.stopper.filter(body)
-        #body = map(Document.stemmer.stem, body)
+        body = map(Document.stemmer.stem, body)
         self.body = body
 
     def get(self, field):

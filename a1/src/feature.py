@@ -14,7 +14,7 @@ class Feature:
         self.topics = Set()
         self.places = Set()
         self.matrix = {}
-        self.idfs = {}
+        self.dfs = {}
 
     def add(self, doc):
         self.docs.append(doc)
@@ -39,9 +39,9 @@ class Feature:
         for d in self.docs:
             self.matrix[d.id] = {}
             for w in self.words:
-                idf = self.tfidf.get_idf(w)
-                if idf > 2:
-                    self.idfs[w] = idf
+                df = self.tfidf.get_df(w)
+                if df > 2:
+                    self.dfs[w] = df
                     self.matrix[d.id][w] = self.tfidf.get_tfidf(w, d.id)
                 else:
                     self.words.remove(w)
@@ -52,7 +52,7 @@ class Feature1:
         self.f = f
         self.tfidf = f.tfidf
         self.matrix = f.matrix
-        self.idfs = f.idfs
+        self.dfs = f.dfs
         self.out = Output('output1')
         self.features = Set()
 
@@ -84,16 +84,16 @@ class Feature2(Feature):
         self.f = f
         self.tfidf = f.tfidf
         self.matrix = f.matrix
-        self.idfs = f.idfs
+        self.dfs = f.dfs
         self.out = Output('output2')
         self.features = Set()
 
     def _select(self):
-        idfs = {k:v for (k,v) in self.idfs.iteritems() if v>1}
-        length = len(idfs)
+        dfs = {k:v for (k,v) in self.dfs.iteritems() if v>1}
+        length = len(dfs)
         start = max(length/2 - 80, 0)
         end   = min(length/2 + 20, length)
-        selected = dict(sorted(idfs.iteritems(),
+        selected = dict(sorted(dfs.iteritems(),
                         key=operator.itemgetter(1),
                         reverse=True)[start:end])
         for word, idf in selected.iteritems():

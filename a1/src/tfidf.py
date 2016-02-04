@@ -19,10 +19,10 @@ class Tfidf:
     def get_tf(self, word, did):
         return self.docs[did].get(word, 0)
 
-    def get_idf(self, word):
+    def get_df(self, word):
         return self.df[word]
 
     def get_tfidf(self, word, did):
         tf = self.get_tf(word, did)
-        idf = math.log(len(self.docs)) / (1 + self.get_idf(word))
+        idf = math.log(len(self.docs)) / (1 + self.get_df(word))
         return tf * idf
