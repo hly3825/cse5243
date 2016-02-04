@@ -27,8 +27,8 @@ class Feature:
     def _compress(self):
         self.title = list(self.title)
         self.body = list(self.body)
-        self.topics = list(self.topics)
-        self.places = list(self.places)
+        self.topics = sorted(self.topics)
+        self.places = sorted(self.places)
         self.words = self.title + self.body + self.topics + self.places
         self.title = []
         self.body = []
@@ -38,13 +38,15 @@ class Feature:
         print 'Building tf-idf matrix'
         for d in self.docs:
             self.matrix[d.id] = {}
-            for w in self.words:
-                df = self.tfidf.get_df(w)
-                if df > 2:
-                    self.dfs[w] = df
-                    self.matrix[d.id][w] = self.tfidf.get_tfidf(w, d.id)
-                else:
-                    self.words.remove(w)
+        for w in self.words:
+            df = self.tfidf.get_df(w)
+            if df > 2:
+                self.dfs[w] = df
+                for d in self.docs:
+                    tfidf = self.tfidf.get_tfidf(w, d.id)
+                    if tfidf:
+                        self.matrix[d.id][w] = tfidf
+        self.words = []
 
 class Feature1:
 
@@ -57,18 +59,19 @@ class Feature1:
         self.features = Set()
 
     def _select(self):
-        nonzero = {}
+        values = []
         for did, row in self.matrix.iteritems():
-            nonzero.update({k:v for (k,v) in row.iteritems() if v>0})
-        length = len(nonzero)
-        start = max(length/2 - 75, 0)
-        end   = min(length/2 + 25, length)
-        selected = dict(sorted(nonzero.iteritems(),
-                        key=operator.itemgetter(1),
-                        reverse=True)[start:end])
-        for word, tfidf in selected.iteritems():
+            values += [(v,k) for (k,v) in row.iteritems()]
+        length = len(values)
+        start = max(length/4 - 250, 0)
+        end   = min(length/4 + 250, length)
+        selected = sorted(values,
+                        key=operator.itemgetter(0),
+                        reverse=True)[start:end]
+        for tfidf, word in selected:
             self.features.add(word)
-        self.features = sorted(self.features)
+        self.features = sorted(
+                set(self.features) - set(self.f.topics + self.f.places))
         self.features += self.f.topics
         self.features += self.f.places
 
@@ -89,16 +92,16 @@ class Feature2(Feature):
         self.features = Set()
 
     def _select(self):
-        dfs = {k:v for (k,v) in self.dfs.iteritems() if v>1}
-        length = len(dfs)
-        start = max(length/2 - 80, 0)
-        end   = min(length/2 + 20, length)
-        selected = dict(sorted(dfs.iteritems(),
+        length = len(self.dfs)
+        start = max(length/4 - 250, 0)
+        end   = min(length/4 + 250, length)
+        selected = sorted(self.dfs.iteritems(),
                         key=operator.itemgetter(1),
-                        reverse=True)[start:end])
-        for word, idf in selected.iteritems():
+                        reverse=True)[start:end]
+        for word, idf in selected:
             self.features.add(word)
-        self.features = sorted(self.features)
+        self.features = sorted(
+                set(self.features) - set(self.f.topics + self.f.places))
         self.features += self.f.topics
         self.features += self.f.places
 
