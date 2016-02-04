@@ -23,6 +23,6 @@ class Output:
         for doc in docs:
             print doc.id,
             for f in features:
-                print matrix[doc.id][f],
+                print matrix[doc.id].get(f, 0),
             print
         self._reset_output()

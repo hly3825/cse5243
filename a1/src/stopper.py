@@ -8,8 +8,8 @@ class Stopper:
             return sf.read().split()
 
     def __init__(self):
-        self.stopwords = self._read_file('../data/input/stopwords.txt')
-        #self.engwords = self._read_file('/usr/share/dict/words')
+        self.stopwords = self._read_file(stopwords_file)
+        #self.engwords = self._read_file(engwords_file)
 
     def filter(self, text):
         text = re.sub('[^A-Za-z]+', ' ', text)
