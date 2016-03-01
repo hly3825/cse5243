@@ -8,7 +8,7 @@ class Tfidf:
 
     def add(self, doc):
         tf = {}
-        words = doc.title + doc.body + doc.topics + doc.places
+        words = doc.title + doc.body
         incr = 1.0/len(words)
         for w in words:
             tf[w] = tf.get(w, 0.0) + incr

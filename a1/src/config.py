@@ -1,7 +1,7 @@
 global input_dir, output_dir, extension
 
 extension  = '.sgm'
-input_dir  = '../data/input/test'
+input_dir  = '../data/input/full'
 output_dir = '../data/output/'
 stopwords_file = '../data/input/stopwords.txt'
 engwords_file = '/usr/share/dict/words'

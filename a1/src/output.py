@@ -15,14 +15,14 @@ class Output:
 
     def _print_header(self, features):
         print '#id',
+        print '#topics',
         print ' '.join(features)
 
     def write_data(self, docs, features, matrix):
         self._set_output()
         self._print_header(features)
         for doc in docs:
-            print doc.id,
-            for f in features:
-                print matrix[doc.id].get(f, 0),
-            print
+            vector = [matrix[doc.id].get(f, 0) for f in features]
+            if not all(v == 0 for v in vector):
+                print doc.id, doc.topics, vector
         self._reset_output()

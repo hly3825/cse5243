@@ -17,6 +17,8 @@ class Feature:
         self.dfs = {}
 
     def add(self, doc):
+        if not doc.topics:
+            return
         self.docs.append(doc)
         self.tfidf.add(doc)
         self.title.update(doc.title)
@@ -29,7 +31,7 @@ class Feature:
         self.body = list(self.body)
         self.topics = sorted(self.topics)
         self.places = sorted(self.places)
-        self.words = self.title + self.body + self.topics + self.places
+        self.words = self.title + self.body
         self.title = []
         self.body = []
 
@@ -63,17 +65,14 @@ class Feature1:
         for did, row in self.matrix.iteritems():
             values += [(v,k) for (k,v) in row.iteritems()]
         length = len(values)
-        start = max(length/4 - 250, 0)
-        end   = min(length/4 + 250, length)
+        start = min(length/20, 100)
+        end   = min(start+1000, length)
         selected = sorted(values,
                         key=operator.itemgetter(0),
                         reverse=True)[start:end]
         for tfidf, word in selected:
             self.features.add(word)
-        self.features = sorted(
-                set(self.features) - set(self.f.topics + self.f.places))
-        self.features += self.f.topics
-        self.features += self.f.places
+        self.features = sorted(self.features)
 
     def write(self):
         print 'Building and selecting Feature Set 1'
@@ -93,17 +92,14 @@ class Feature2(Feature):
 
     def _select(self):
         length = len(self.dfs)
-        start = max(length/4 - 250, 0)
-        end   = min(length/4 + 250, length)
+        start = min(length/20, 100)
+        end   = min(start+1000, length)
         selected = sorted(self.dfs.iteritems(),
                         key=operator.itemgetter(1),
                         reverse=True)[start:end]
         for word, idf in selected:
             self.features.add(word)
-        self.features = sorted(
-                set(self.features) - set(self.f.topics + self.f.places))
-        self.features += self.f.topics
-        self.features += self.f.places
+        self.features = sorted(self.features)
 
     def write(self):
         print 'Building and selecting Feature Set 2'
