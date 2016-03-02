@@ -4,5 +4,5 @@ from model import *
 class kmeans(model):
 
     def __init__(self, doc):
-        kmeans = KMeans(n_clusters=20)
-        model.__init__(self, doc, kmeans)
+        algo = KMeans(n_clusters=20)
+        model.__init__(self, doc, algo)

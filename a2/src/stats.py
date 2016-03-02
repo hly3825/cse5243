@@ -7,5 +7,3 @@ def get_entropy(clusters):
 
 def get_variance(clusters):
     return np.var(Counter(clusters).values())
-
-

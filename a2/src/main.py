@@ -2,6 +2,8 @@ import numpy as np
 from collections import Counter
 from config import *
 from kmeans import *
+from dbscan import *
+from agglo  import *
 from document import *
 
 def read_input(in_file):
@@ -16,3 +18,7 @@ if __name__ == '__main__':
     d = read_input(in_file)
     kmn = kmeans(d)
     kmn.evaluate()
+    dbs = dbscan(d)
+    dbs.evaluate()
+    agg = agglo(d)
+    agg.evaluate()
