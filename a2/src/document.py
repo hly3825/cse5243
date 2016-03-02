@@ -1,7 +1,6 @@
 import numpy as np
 from collections import Set
 from sklearn.preprocessing import scale
-from config import *
 
 class document:
 
