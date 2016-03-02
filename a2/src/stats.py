@@ -1,0 +1,8 @@
+import numpy as np
+from scipy.stats import entropy
+
+def get_entropy(clusters):
+    return entropy(Counter(clusters).values())
+
+def get_variance(clusters):
+    return np.var(Counter(clusters).values())
