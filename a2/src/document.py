@@ -17,16 +17,9 @@ class document:
             lbl = lbl.split()[0]
             vec = map(float, vec.split())
             self.add_row(lbl, vec)
-        self.split_data()
+        self.data = scale(np.array(self.vectors))
 
     def add_row(self, lbl, vec):
         self.labels.append(lbl)
         self.vectors.append(vec)
         #self.labels.update(lbl)
-
-    def split_data(self):
-        self.data = scale(np.array(self.vectors))
-        ntrain = int(self.data.shape[0] * split_ratio)
-        np.random.shuffle(self.data)
-        self.train = self.data[:ntrain]
-        self.test  = self.data[ntrain:]
