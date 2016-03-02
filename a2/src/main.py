@@ -1,3 +1,4 @@
+import numpy as np
 from collections import Counter
 from config import *
 from kmeans import *
@@ -11,6 +12,7 @@ def read_input(in_file):
     return d
 
 if __name__ == '__main__':
+    np.random.seed(42)
     d = read_input(in_file)
     kmn = kmeans(d)
     kmn.evaluate()
