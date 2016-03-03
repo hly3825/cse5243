@@ -1,0 +1,127 @@
+python main.py -i './data/full.txt' -a kmeans -p 4
+input: ./data/full.txt, algo: kmeans, params: 4
+Time taken: 15.3779211044
+Topical Entropy: 1.21129262876
+Entropy: 1.03150143788, Variance: 0.701111845608
+Completeness: 0.565615003958, Homogeneity: 0.184451290491
+V-Measure: 0.278184523616, Mutual Info: 0.322999098143
+
+python main.py -i './data/full.txt' -a kmeans -p 8
+input: ./data/full.txt, algo: kmeans, params: 8
+Time taken: 44.9291570187
+Topical Entropy: 1.53201026619
+Entropy: 1.49728088653, Variance: 6.57195894549
+Completeness: 0.56881209199, Homogeneity: 0.269254543091
+V-Measure: 0.365496569181, Mutual Info: 0.391350533325
+
+input: ./data/full.txt, algo: kmeans, params: 10
+Time taken: 45.0063569546
+Topical Entropy: 2.44233904994
+Entropy: 1.21158536256, Variance: 3.9024601326
+Completeness: 0.594087699343, Homogeneity: 0.227559786274
+V-Measure: 0.329071705949, Mutual Info: 0.367682566748
+
+python main.py -i './data/full.txt' -a kmeans -p 20
+input: ./data/full.txt, algo: kmeans, params: 20
+Time taken: 94.0238699913
+Topical Entropy: 2.33240126825
+Entropy: 1.55923806381, Variance: 17.1680081588
+Completeness: 0.492696853018, Homogeneity: 0.242875191175
+V-Measure: 0.325362670625, Mutual Info: 0.345924619488
+
+python main.py -i './data/full.txt' -a dbscan -p 0.5,5,euclidean
+input: ./data/full.txt, algo: dbscan, params: 0.5,5,euclidean
+Time taken: 12.5882599354
+Topical Entropy: 0.00262300228771
+Entropy: 0.195083122836, Variance: 2.53797234692
+Completeness: 0.201044571982, Homogeneity: 0.0123994662279
+V-Measure: 0.023358304139, Mutual Info: 0.0499284025439
+
+python main.py -i './data/full.txt' -a dbscan -p 0.5,5,manhattan
+input: ./data/full.txt, algo: dbscan, params: 0.5,5,manhattan
+Time taken: 11.7917001247
+Topical Entropy: 0.00262300228771
+Entropy: 0.195083122836, Variance: 2.53797234692
+Completeness: 0.201044571982, Homogeneity: 0.0123994662279
+V-Measure: 0.023358304139, Mutual Info: 0.0499284025439
+
+python main.py -i './data/full.txt' -a dbscan -p 1,10,euclidean
+input: ./data/full.txt, algo: dbscan, params: 1,10,euclidean
+Time taken: 13.4492690563
+Topical Entropy: 0.00287944723831
+Entropy: 0.145924707305, Variance: 0.204458346811
+Completeness: 0.241903121291, Homogeneity: 0.0111599241271
+V-Measure: 0.0213355567207, Mutual Info: 0.051957872163
+
+python main.py -i './data/full.txt' -a dbscan -p 1,10,manhattan
+input: ./data/full.txt, algo: dbscan, params: 1,10,manhattan
+Time taken: 12.5471029282
+Topical Entropy: 0.00287944723831
+Entropy: 0.13802502411, Variance: 0.156054243995
+Completeness: 0.247485185477, Homogeneity: 0.0107993589796
+V-Measure: 0.02069563524, Mutual Info: 0.0516979821666
+
+python main.py -i './data/full.txt' -a agglo -p 10,ward,euclidean
+input: ./data/full.txt, algo: agglo, params: 10,ward,euclidean
+Time taken: 206.66680789
+Topical Entropy: 2.62007032946
+Entropy: 1.2414354188, Variance: 7.85111318828
+Completeness: 0.432990737596, Homogeneity: 0.169939242086
+V-Measure: 0.244081801393, Mutual Info: 0.271260239949
+
+python main.py -i './data/full.txt' -a agglo -p 10,average,cosine
+input: ./data/full.txt, algo: agglo, params: 10,average,cosine
+Time taken: 206.940885067
+Topical Entropy: 2.25342451777
+Entropy: 1.98810033587, Variance: 6.4615171575
+Completeness: 0.372862918994, Homogeneity: 0.23435727135
+V-Measure: 0.287813671787, Mutual Info: 0.29560638742
+
+python main.py -i './data/full.txt' -a agglo -p 10,average,euclidean
+input: ./data/full.txt, algo: agglo, params: 10,average,euclidean
+Time taken: 217.200109005
+Topical Entropy: 3.16061809114
+Entropy: 0.00920800630937, Variance: 0.0285453576402
+Completeness: 0.274029100515, Homogeneity: 0.000797725054491
+V-Measure: 0.00159081908171, Mutual Info: 0.0147851235754
+
+python main.py -i './data/full.txt' -a agglo -p 10,average,manhattan
+input: ./data/full.txt, algo: agglo, params: 10,average,manhattan
+Time taken: 220.672949076
+Topical Entropy: 3.15872472484
+Entropy: 0.0109762213143, Variance: 0.0325467026602
+Completeness: 0.402381462595, Homogeneity: 0.00139630971288
+V-Measure: 0.00278296222841, Mutual Info: 0.0237033572412
+
+python main.py -i './data/full.txt' -a minib -p 10,10
+input: ./data/full.txt, algo: minib, params: 10,10
+Time taken: 0.232015132904
+Topical Entropy: 3.12404607517
+Entropy: 0.155705304007, Variance: 0.0908232263865
+Completeness: 0.250638880923, Homogeneity: 0.0123379438253
+V-Measure: 0.0235181821533, Mutual Info: 0.055609067905
+
+python main.py -i './data/full.txt' -a minib -p 10,25
+input: ./data/full.txt, algo: minib, params: 10,25
+Time taken: 0.182121038437
+Topical Entropy: 3.14272342552
+Entropy: 0.107755842439, Variance: 0.0709220663274
+Completeness: 0.183932270513, Homogeneity: 0.00626599000062
+V-Measure: 0.0121191199616, Mutual Info: 0.0339487520805
+
+python main.py -i './data/full.txt' -a minib -p 10,100
+input: ./data/full.txt, algo: minib, params: 10,100
+Time taken: 0.211174964905
+Topical Entropy: 3.13847016915
+Entropy: 0.134693567602, Variance: 0.758658495777
+Completeness: 0.182649473189, Homogeneity: 0.00777779010747
+V-Measure: 0.0149202298149, Mutual Info: 0.0376909706124
+
+python main.py -i './data/full.txt' -a minib -p 20,20
+input: ./data/full.txt, algo: minib, params: 20,20
+Time taken: 0.310341835022
+Topical Entropy: 3.08069833483
+Entropy: 0.319385797153, Variance: 1.29612087957
+Completeness: 0.257206461975, Homogeneity: 0.0259709845527
+V-Measure: 0.0471782278759, Mutual Info: 0.0817306861026
+
