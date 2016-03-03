@@ -1,6 +1,7 @@
 from kmeans import *
 from dbscan import *
 from agglo  import *
+from minib  import *
 from options import *
 from document import *
 
@@ -12,15 +13,19 @@ class runner:
 
     def read_input(self):
         in_file = self.options['input']
-        print "Processing %s" % in_file
         with open(in_file, 'r') as f:
             self.doc.build(f)
 
     def run(self):
         self.read_input()
-        model = kmeans(self.doc)
+        algo = self.options['algo']
+        params = self.options['params']
+        if algo == 'kmeans':
+            model = kmeans(self.doc, params)
+        elif algo == 'dbscan':
+            model = dbscan(self.doc, params)
+        elif algo == 'agglo':
+            model = agglo(self.doc, params)
+        elif algo == 'minib':
+            model = minib(self.doc, params)
         model.evaluate()
-        #dbs = dbscan(self.doc)
-        #dbs.evaluate()
-        #agg = agglo(self.doc)
-        #agg.evaluate()

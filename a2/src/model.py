@@ -1,6 +1,8 @@
 import time
-from stats import *
+import numpy as np
 from document import *
+from collections import Counter
+from sklearn.metrics.cluster import *
 
 class model:
 
@@ -12,26 +14,36 @@ class model:
         start = time.time()
         self.algo.fit(self.doc.data)
         end = time.time()
-        return end - start
+        print 'Time taken: {}'.format(end - start)
 
-    def eval_accuracy(self):
+    def eval_topics(self):
         labels = self.algo.labels_
-        print labels
-        correct = 0
-        for i in range(0, len(labels)):
-            print labels[i], self.doc.labels[i],
-            correct += 1
-        print
-        return correct/len(labels)
+        cmax = max(labels)
+        actuals = {}
+        for i in range(0, cmax):
+            group = np.where(labels == i)[0]
+            actuals[i] = [self.doc.labels[j] for j in group]
+            #print i, actuals[i]
+        #print
+        return 0
 
-    def eval_entropy(self):
-        ent = get_entropy(self.algo.labels_)
-        var = get_variance(self.algo.labels_)
-        return ent, var
+    def eval_internal(self):
+        ent = entropy(self.algo.labels_)
+        var = np.var(self.algo.labels_)
+        print 'Entropy: {}, Variance: {}'.format(ent, var)
+
+    def eval_ground(self):
+        cmpl = completeness_score(self.doc.labels, self.algo.labels_)
+        homo = homogeneity_score(self.doc.labels, self.algo.labels_)
+        vscore = v_measure_score(self.doc.labels, self.algo.labels_)
+        mutual = normalized_mutual_info_score(self.doc.labels, self.algo.labels_)
+        print 'Completeness: {}, Homogeneity: {}'.format(cmpl, homo)
+        print 'V-Measure: {}, Mutual Info: {}'.format(vscore, mutual)
 
     def evaluate(self):
-        perf = self.eval_performance()
-        accuracy = self.eval_accuracy()
-        ent, var = self.eval_entropy()
-        print 'Time: {}, Accuracy: {}, '.format(perf, accuracy),
-        print 'Entropy: {}, Variance: {}'.format(ent, var)
+        self.eval_performance()
+        #self.eval_topics()
+        self.eval_internal()
+        self.eval_ground()
+        print
+
