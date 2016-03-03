@@ -1,11 +1,11 @@
-INPUT='./data/mini2.txt'
+INPUT='./data/full.txt'
 
 all: kmeans dbscan agglo minibatch
 
 kmeans:
 	python main.py -i $(INPUT) -a kmeans -p 4
 	python main.py -i $(INPUT) -a kmeans -p 8
-	python main.py -i $(INPUT) -a kmeans -p 12
+	python main.py -i $(INPUT) -a kmeans -p 10
 	python main.py -i $(INPUT) -a kmeans -p 20
 
 dbscan:
