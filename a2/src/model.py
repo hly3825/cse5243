@@ -20,12 +20,13 @@ class model:
         labels = self.algo.labels_
         cmax = max(labels)
         actuals = {}
+        avg = 0.0
         for i in range(0, cmax):
             group = np.where(labels == i)[0]
             actuals[i] = [self.doc.labels[j] for j in group]
             #print i, actuals[i]
-        #print
-        return 0
+            avg += entropy(actuals[i])*len(actuals[i])
+        print 'Topical Entropy: {}'.format(avg/len(labels))
 
     def eval_internal(self):
         ent = entropy(self.algo.labels_)
@@ -42,7 +43,7 @@ class model:
 
     def evaluate(self):
         self.eval_performance()
-        #self.eval_topics()
+        self.eval_topics()
         self.eval_internal()
         self.eval_ground()
         print
