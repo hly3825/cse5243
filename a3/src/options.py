@@ -4,22 +4,22 @@ class options:
 
     def __init__(self):
         self.options = {}
-        self.options['input'] = './data/mini.txt'
-        self.options['algo'] = 'kmeans'
-        self.options['params'] = None
+        self.options['input'] = './data/full.txt'
+        self.options['algo'] = 'knn'
+        self.options['ratio'] = 0.8
 
     def usage(self):
-        print "Usage: python main.py [--help] --input=input_file --algo=algorithm --params=extra_params"
+        print "Usage: python main.py [--help] --input=input_file --algo=algorithm --ratio=split_ratio"
         print "input      input file containing the feature vectors"
-        print "algo       clustering algorithm to use: kmeans/dbscan/agglo/minib"
-        print "params     extra parameters to be passed to the algorithm"
+        print "algo       clustering algorithm to use: knn/bayes/dtree"
+        print "ratio      ratio of training data : test data"
         print
 
     def parse(self):
         try:
             opts, args = getopt.getopt(sys.argv[1:],
-                    "i:a:p:h",
-                    ["input=", "algo=", "params=", "help"])
+                    "i:a:r:h",
+                    ["input=", "algo=", "ratio=", "help"])
         except getopt.GetoptError as err:
             print str(err)
             self.usage()
@@ -30,14 +30,14 @@ class options:
                 self.options['input'] = a
             elif o in ('-a', '--algo'):
                 self.options['algo'] = a
-            elif o in ('-p', '--params'):
-                self.options['params'] = a
+            elif o in ('-r', '--ratio'):
+                self.options['ratio'] = float(a)
             elif o in ('-h', '--help'):
                 self.usage()
                 sys.exit(0)
 
-        print 'input: {}, algo: {}, params: {}'.format(
+        print 'input: {}, algo: {}, ratio: {}'.format(
                 self.options['input'],
                 self.options['algo'],
-                self.options['params'])
+                self.options['ratio'])
         return self.options

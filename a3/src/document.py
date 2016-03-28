@@ -7,7 +7,7 @@ class document:
         self.labels = []
         self.vectors = []
 
-    def build(self, f):
+    def build(self, f, r):
         f.readline() #ignore header
         for line in f:
             id, lbls, vec = line.translate(None, ',]\n').split('[')
@@ -16,6 +16,7 @@ class document:
             #vec = [1 if e > 0 else 0 for e in vec]
             self.add_row(lbls, vec)
         self.transform_labels()
+        self.ratio = r
 
     def add_row(self, lbls, vec):
         for lbl in lbls:
@@ -27,11 +28,11 @@ class document:
         le.fit(self.labels)
         self.labels = le.transform(self.labels)
 
-    def split(self, ratio=0.95):
+    def split(self):
         rows = zip(self.vectors, self.labels)
         random.shuffle(rows)
         self.vectors[:], self.labels[:] = zip(*rows)
-        idx = int(len(rows)*ratio)
+        idx = int(len(rows)*self.ratio)
         trainx = self.vectors[:idx]
         trainy = self.labels[:idx]
         testx = self.vectors[idx:]
