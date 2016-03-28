@@ -1,4 +1,4 @@
-INPUT='../data/full.txt'
+INPUT='./data/full.txt'
 RATIO=0.8
 
 all: knn dtree bayes
