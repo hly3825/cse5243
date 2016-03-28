@@ -9,7 +9,7 @@ class runner:
 
     def read_input(self):
         #in_file = self.options['input']
-        in_file = '../data/mini.txt'
+        in_file = '../data/full.txt'
         with open(in_file, 'r') as f:
             self.doc.build(f)
 

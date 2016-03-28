@@ -1,11 +1,12 @@
 import time
 from document import *
+from sklearn.metrics import accuracy_score
 
 class classifier:
 
     def __init__(self, algo, doc):
         self.algo = algo
-        self.trainx, self.trainy, self.test = doc.split()
+        self.trainx, self.trainy, self.testx, self.testy = doc.split()
 
     def eval_training(self):
         start = time.time()
@@ -15,10 +16,12 @@ class classifier:
 
     def eval_prediction(self):
         start = time.time()
-        predicted = self.algo.predict(self.test)
+        predy = self.algo.predict(self.testx)
         end = time.time()
-        print 'Testing Time: {}'.format(end - start)
+        print 'Testing Time: {}'.format((end - start)/len(predy))
+        score = accuracy_score(self.testy, predy, True)
+        print 'Accuracy Score: {}'.format(score)
 
     def evaluate(self):
         self.eval_training()
-        #self.eval_prediction()
+        self.eval_prediction()
