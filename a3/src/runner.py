@@ -1,6 +1,8 @@
 from knn import *
+from bnb import *
+from gnb import *
+from mnb import *
 from dtree import *
-from bayes import *
 from options import *
 from document import *
 
@@ -23,6 +25,10 @@ class runner:
             classifier = knn(self.doc)
         elif algo == 'dtree':
             classifier = dtree(self.doc)
-        elif algo == 'bayes':
-            classifier = bayes(self.doc)
+        elif algo == 'bnb':
+            classifier = bnb(self.doc)
+        elif algo == 'gnb':
+            classifier = gnb(self.doc)
+        elif algo == 'mnb':
+            classifier = mnb(self.doc)
         classifier.evaluate()

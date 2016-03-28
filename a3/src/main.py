@@ -1,6 +1,6 @@
-import numpy as np
+import random
 from runner import *
 
 if __name__ == '__main__':
-    np.random.seed(42)
+    random.seed(42)
     runner().run()

@@ -13,7 +13,7 @@ class document:
             id, lbls, vec = line.translate(None, ',]\n').split('[')
             lbls = lbls.split()
             vec = map(float, vec.split())
-            #vec = [1 if e > 0 else 0 for e in vec]
+            vec = [1 if e > 0 else 0 for e in vec]
             self.add_row(lbls, vec)
         self.transform_labels()
         self.ratio = r

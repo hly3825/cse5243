@@ -21,6 +21,7 @@ class classifier:
         print 'Testing Time: {}'.format((end - start)/len(predy))
         score = accuracy_score(self.testy, predy, True)
         print 'Accuracy Score: {}'.format(score)
+        print
 
     def evaluate(self):
         self.eval_training()

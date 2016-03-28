@@ -11,7 +11,7 @@ class options:
     def usage(self):
         print "Usage: python main.py [--help] --input=input_file --algo=algorithm --ratio=split_ratio"
         print "input      input file containing the feature vectors"
-        print "algo       clustering algorithm to use: knn/bayes/dtree"
+        print "algo       clustering algorithm to use: knn/bayes/bnb/gnb/mnb"
         print "ratio      ratio of training data : test data"
         print
 

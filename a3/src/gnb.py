@@ -1,7 +1,7 @@
 from classifier import *
 from sklearn.naive_bayes import GaussianNB
 
-class bayes(classifier):
+class gnb(classifier):
 
     def __init__(self, doc):
         algo = GaussianNB()
