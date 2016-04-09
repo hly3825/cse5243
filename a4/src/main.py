@@ -11,7 +11,6 @@ def evaluate(base, est):
 if __name__ == '__main__':
     np.random.seed(42)
     ks = [16, 32, 64, 128, 256]
-    ks = [2, 64, 256]
 
     f = open(sys.argv[1], 'r')
     doc = document(f)
