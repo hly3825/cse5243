@@ -19,7 +19,7 @@ class document:
         same = sum([1 if a[i]==b[i] else 0 for i in range(n)])
         return float(same) / n
 
-    def get_jaccard_sim(self):
+    def get_base_score(self):
         n = len(self.vectors)
         sets = [0] * n
         print "Number of Documents: ", n
@@ -39,7 +39,7 @@ class document:
             sig.append(v.index(1))
         return sig
 
-    def get_minhash(self, k):
+    def get_minhash_score(self, k):
         flen = len(self.vectors[0])
         n = len(self.vectors)
         perms = [0] * k

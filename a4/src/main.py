@@ -16,13 +16,13 @@ if __name__ == '__main__':
     doc = document(f)
 
     start = time.time()
-    base = doc.get_jaccard_sim()
+    base = doc.get_base_score()
     end = time.time()
     print 'Time taken for Jaccard: {}'.format(end - start)
 
     for k in ks:
         start = time.time()
-        est = doc.get_minhash(k)
+        est = doc.get_minhash_score(k)
         end = time.time()
         mse, rme = evaluate(base, est)
         print 'k: {}, time: {}'.format(k, end - start),
