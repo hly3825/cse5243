@@ -1,5 +1,4 @@
 import numpy as np
-from sklearn.metrics import jaccard_similarity_score
 
 class document:
 
@@ -12,8 +11,13 @@ class document:
             vec = [1 if e > 0 else 0 for e in vec]
             self.vectors.append(vec)
 
-    def jaccard_sets(self, a, b):
-        return float(len(a & b)) / float(len(a | b))
+    def jaccard_base(self, a, b):
+        return float(len(a & b)) / len(a | b)
+
+    def jaccard_est(self, a, b):
+        n = len(a)
+        same = sum([1 if a[i]==b[i] else 0 for i in range(n)])
+        return float(same) / n
 
     def get_jaccard_sim(self):
         n = len(self.vectors)
@@ -25,7 +29,7 @@ class document:
             sets[i] = (set([j for j, e in enumerate(v) if e > 0]))
         for i in range(n):
             for j in range (n):
-                scores[i,j] = scores[j,i] = self.jaccard_sets(sets[i], sets[j])
+                scores[i,j] = scores[j,i] = self.jaccard_base(sets[i], sets[j])
         return scores
 
     def get_sig(self, perms, vec):
@@ -45,5 +49,5 @@ class document:
         sigs = [self.get_sig(perms, self.vectors[i]) for i in range(n)]
         for i in range(n):
             for j in range (n):
-                scores[i,j] = scores[j,i] = jaccard_similarity_score(sigs[i], sigs[j])
+                scores[i,j] = scores[j,i] = self.jaccard_est(sigs[i], sigs[j])
         return scores
