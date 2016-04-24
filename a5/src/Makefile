@@ -1,4 +1,4 @@
-INPUT='./data/mini.txt'
+INPUT='./data/full.txt'
 
 all:
 	python main.py $(INPUT)

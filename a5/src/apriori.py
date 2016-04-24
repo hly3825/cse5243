@@ -18,8 +18,8 @@ class apriori:
                 self.itemset.add(frozenset([i]))
 
     def train(self):
-        minsup = len(self.txns) * 0.05
-        minconf = 0.5
+        minsup = len(self.txns) * 0.03
+        minconf = 0.25
         largeset = {}
         parents = {}
         rules = {}
@@ -55,35 +55,40 @@ class apriori:
                         counters[c] += 1
             largeset[k] = [c for c in candidates if counters[c] >= minsup]
 
-        print largeset
-        for k,v in largeset.items()[2:]:
+        for k,v in largeset.items()[1:]:
             for itemset in v:
                 lbls = itemset.intersection(self.labels)
                 diff = itemset.difference(self.labels)
                 if len(diff) and len(lbls):
                     for l in lbls:
-                        c1 = cc[itemset]
-                        c2 = cc[diff.union(set([l]))]
+                        c1 = cc[diff.union(set([l]))]
+                        c2 = cc[frozenset([l])]
                         conf = float(c1)/c2
                         if conf > minconf:
                             if diff not in rules or rules[diff][1] <= conf:
                                 rules[diff] = (l, conf)
+
         self.rules = rules
-        print self.rules
+        print 'Created {} rules'.format(len(self.rules))
 
     def test(self, txn):
         predicted = set()
-        print txn.features
         for k,v in self.rules.items():
             if k.issubset(txn.features):
                 predicted.add(v[0])
-        print 'Predicted: {}, Actual: {}'.format(predicted, txn.labels)
+        match = predicted.intersection(txn.labels)
+        if len(match) > 0:
+            return True
+        else:
+            return False
 
     def evaluate(self, txns):
-        return
+        correct = 0.0
         np.random.seed(42)
         np.random.shuffle(txns)
         idx = int(len(txns)*0.2)
         for t in txns[0:idx]:
-            self.test(t)
+            if self.test(t) == True:
+                correct += 1
+        print 'Accuracy: {}'.format(correct/idx)
 
