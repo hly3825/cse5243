@@ -6,4 +6,4 @@ class transaction:
         self.features = features
 
     def __repr__(self):
-        return "txn_id: {}, features: {}, labels: {}".format(self.id, self.labels, self.features)
+        return "txn_id: {}, labels: {}, features: {}".format(self.id, self.labels, self.features)
