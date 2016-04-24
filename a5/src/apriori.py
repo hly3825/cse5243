@@ -18,8 +18,8 @@ class apriori:
                 self.itemset.add(frozenset([i]))
 
     def train(self):
-        minsup = len(self.txns) * 0.03
-        minconf = 0.25
+        minsup = len(self.txns) * 0.02
+        minconf = 0.2
         largeset = {}
         parents = {}
         rules = {}
